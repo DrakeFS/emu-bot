@@ -22,26 +22,21 @@ async def listservers(ctx):
 
 @client.command()
 async def startserver(ctx, server: str):
-    try:
-        if(server.lower() == 'moria'):
-                os.startfile("moriatest.bat")
-                await ctx.send(server + " server started.")
-                return
-        if(server.lower() == 'valheim'):
-            # os.startfile("C:/Users/Kevin/Desktop/commando.bat")
-            await ctx.send(server + " server started.")
-            return
-        if(server.lower() == 'enshrouded'):
-            # os.startfile("C:/Users/Kevin/Desktop/commando.bat")
-            await ctx.send(server + " server started.")
-            return
-        else:
-            await ctx.send(server + " is not an option on !listservers.")
-            return
-    except Exception:
-        await ctx.send("Must provide a server from !listservers")
+    if(server.lower() == 'moria'):
+        os.startfile("moriatest.bat")
+        await ctx.send(server + " server started.")
         return
-        
+    if(server.lower() == 'valheim'):
+        # os.startfile("C:/Users/Kevin/Desktop/commando.bat")
+        await ctx.send(server + " server started.")
+        return
+    if(server.lower() == 'enshrouded'):
+        # os.startfile("C:/Users/Kevin/Desktop/commando.bat")
+        await ctx.send(server + " server started.")
+        return
+    else:
+        await ctx.send(server + " is not an option on !listservers.")
+        return
 
 with open('ServerBotToken.txt', 'r') as file: 
     TOKEN = file.read().rstrip()
