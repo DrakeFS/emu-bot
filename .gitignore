@@ -1,2 +1,6 @@
 __pycache__
 .env
+ServerBotToken.txt
+/bot-env
+/cogs
+moriatest.bat

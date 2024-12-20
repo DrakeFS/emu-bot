@@ -1,51 +1,48 @@
 import os
 import discord
-from dotenv import load_dotenv
+import random
+# from dotenv import load_dotenv
 from discord.ext import commands
-from webserver import keep_alive
+# from webserver import keep_alive
 
 intents = discord.Intents.all()
+intents.members = True
+intents.message_content = True
 
 client = commands.Bot(command_prefix='!', intents=intents)
 
-server_status = False
-
-@client.command()
-async def load(ctx, extension):
-    client.load_extension(f"cogs.{extension}")
-
-@client.command()
-async def unload(ctx, extension):
-    client.unload_extension(f"cogs.{extension}")
-
-for filename in os.listdir("./cogs"):
-    if filename.endswith(".py"):
-        client.load_extension(f"cogs.{filename[:-3]}")  
-
 @client.event
 async def on_ready():
-    print("We have logged in as {0.user}".format(client))
+    print(f'Logged in as {client.user} (ID: {client.user.id})')
+    print('------')
 
-@client.event
-async def on_message(message):
-    username = str(message.author).split("#")[0]
-    user_message = str(message.content)
-    channel = str(message.channel.name)
-    roles = str(message.author.roles)
-    print(f"{username}: {user_message} ({channel}) [{roles}]")
+@client.command()
+async def listservers(ctx):
+     await ctx.send("The currently available serversare: Moria, Valheim, Enshrouded")
 
-    # forest_role = discord.utils.get(ctx.guild.roles, name="The Forest")
-
-    if message.author == client.user:
+@client.command()
+async def startserver(ctx, server: str):
+    try:
+        if(server.lower() == 'moria'):
+                os.startfile("moriatest.bat")
+                await ctx.send(server + " server started.")
+                return
+        if(server.lower() == 'valheim'):
+            # os.startfile("C:/Users/Kevin/Desktop/commando.bat")
+            await ctx.send(server + " server started.")
+            return
+        if(server.lower() == 'enshrouded'):
+            # os.startfile("C:/Users/Kevin/Desktop/commando.bat")
+            await ctx.send(server + " server started.")
+            return
+        else:
+            await ctx.send(server + " is not an option on !listservers.")
+            return
+    except Exception:
+        await ctx.send("Must provide a server from !listservers")
         return
-    if user_message.lower() == "hi":
-        # if forest_role in message.author.roles:
-        #     await message.channel.send(f"Hi {username}, you Forester!")
-        # else:
-        await message.channel.send(f"Hi {username}!")
-    await client.process_commands(message)
+        
 
-# keep_alive()
-load_dotenv()
-TOKEN = os.getenv("TOKEN")
+with open('ServerBotToken.txt', 'r') as file: 
+    TOKEN = file.read().rstrip()
 client.run(TOKEN)
