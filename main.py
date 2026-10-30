@@ -1,51 +1,85 @@
 import os
+import sys
+import subprocess
 import discord
-from dotenv import load_dotenv
+import psutil
 from discord.ext import commands
-from webserver import keep_alive
 
-intents = discord.Intents.all()
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
 
 client = commands.Bot(command_prefix='!', intents=intents)
 
-server_status = False
+def open_file(filename):
+    if sys.platform == "win32":
+        FILE_LOCATION = "c:/gameservers/"
+        os.startfile(FILE_LOCATION+filename)
+    else:
+        FILE_LOCATION = ""
+        subprocess.call(["xdg-open",FILE_LOCATION+filename])
 
-@client.command()
-async def load(ctx, extension):
-    client.load_extension(f"cogs.{extension}")
-
-@client.command()
-async def unload(ctx, extension):
-    client.unload_extension(f"cogs.{extension}")
-
-for filename in os.listdir("./cogs"):
-    if filename.endswith(".py"):
-        client.load_extension(f"cogs.{filename[:-3]}")  
+def check_server_status(server_name):
+    for process in psutil.process_iter(attrs=['pid','name']):
+        if(server_name.lower() in (process.info['name']).lower()):
+        # if(process.info['name'] == server_name):
+            return True
+        if(server_name.lower() == 'palworld'):
+            if('palserver' in (process.info['name']).lower()):
+                return True
+    return False
 
 @client.event
 async def on_ready():
-    print("We have logged in as {0.user}".format(client))
+    print(f'Logged in as {client.user} (ID: {client.user.id})')
+    print('------')
 
-@client.event
-async def on_message(message):
-    username = str(message.author).split("#")[0]
-    user_message = str(message.content)
-    channel = str(message.channel.name)
-    roles = str(message.author.roles)
-    print(f"{username}: {user_message} ({channel}) [{roles}]")
+@client.command()
+async def listservers(ctx):
+     await ctx.send("The currently available servers are: Moria, Enshrouded, Valheim and Palworld")
 
-    # forest_role = discord.utils.get(ctx.guild.roles, name="The Forest")
-
-    if message.author == client.user:
+@client.command()
+@commands.has_role(1319646693838557264)
+async def startserver(ctx, server):
+    if check_server_status(server):
+        await ctx.send(server + " server is already running")
         return
-    if user_message.lower() == "hi":
-        # if forest_role in message.author.roles:
-        #     await message.channel.send(f"Hi {username}, you Forester!")
-        # else:
-        await message.channel.send(f"Hi {username}!")
-    await client.process_commands(message)
+    else:
+        if(server.lower() == 'moria'):
+            open_file(r"moriaserver/startMoriaServer.bat")
+            await ctx.send(server + " server started.")
+            return
+        if(server.lower() == 'valheim'):
+            open_file(r"valheim/StartValheimServer.bat")
+            await ctx.send(server + " server started.")
+            return
+        if(server.lower() == 'enshrouded'):
+            open_file(r"enshroudedserver/StartEnshroudedServer.bat")
+            await ctx.send(server + " server started.")
+            return
+        if(server.lower() == 'palworld'):
+            open_file(r"palworld/StartPalworldServer.bat")
+            await ctx.send(server + " server started.")
+            return
+        else:
+            await ctx.send(server + " is not an option on !listservers.")
+            return
 
-# keep_alive()
-load_dotenv()
-TOKEN = os.getenv("TOKEN")
+@client.command()
+@commands.has_role(1319646693838557264)
+async def closeserver(ctx, server):
+    if check_server_status(server):
+        if(server.lower() == 'enshrouded'):
+            open_file(r"enshroudedserver/CloseEnshroudedServer.bat")
+            await ctx.send(server + " server closed.")
+            return
+        else:
+            await ctx.send(server + " is not an option on !listservers.")
+            return        
+    else:
+        await ctx.send(server + " server is not running")
+        return
+
+with open('ServerBotToken.txt', 'r') as file: 
+    TOKEN = file.read().rstrip()
 client.run(TOKEN)
