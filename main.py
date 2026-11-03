@@ -14,10 +14,10 @@ client = commands.Bot(command_prefix='!', intents=intents)
 def open_file(filename):
     if sys.platform == "win32":
         FILE_LOCATION = "c:/gameservers/"
-        os.startfile(FILE_LOCATION+filename)
+        os.startfile(FILE_LOCATION+filename+".bat")
     else:
-        FILE_LOCATION = ""
-        subprocess.call(["xdg-open",FILE_LOCATION+filename])
+        FILE_LOCATION = "~/gameservers/"
+        subprocess.run(["bash",FILE_LOCATION+filename+".sh"])
 
 def check_server_status(server_name):
     for process in psutil.process_iter(attrs=['pid','name']):
@@ -46,19 +46,19 @@ async def startserver(ctx, server):
         return
     else:
         if(server.lower() == 'moria'):
-            open_file(r"moriaserver/startMoriaServer.bat")
+            open_file(r"moriaserver/startMoriaServer")
             await ctx.send(server + " server started.")
             return
         if(server.lower() == 'valheim'):
-            open_file(r"valheim/StartValheimServer.bat")
+            open_file(r"valheim/StartValheimServer")
             await ctx.send(server + " server started.")
             return
         if(server.lower() == 'enshrouded'):
-            open_file(r"enshroudedserver/StartEnshroudedServer.bat")
+            open_file(r"enshroudedserver/StartEnshroudedServer")
             await ctx.send(server + " server started.")
             return
         if(server.lower() == 'palworld'):
-            open_file(r"palworld/StartPalworldServer.bat")
+            open_file(r"palworld/StartPalworldServer")
             await ctx.send(server + " server started.")
             return
         else:
@@ -70,7 +70,7 @@ async def startserver(ctx, server):
 async def closeserver(ctx, server):
     if check_server_status(server):
         if(server.lower() == 'enshrouded'):
-            open_file(r"enshroudedserver/CloseEnshroudedServer.bat")
+            open_file(r"enshroudedserver/CloseEnshroudedServer")
             await ctx.send(server + " server closed.")
             return
         else:
