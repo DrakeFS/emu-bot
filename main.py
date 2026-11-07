@@ -16,7 +16,8 @@ def open_file(filename):
         FILE_LOCATION = "c:/gameservers/"
         os.startfile(FILE_LOCATION+filename+".bat")
     else:
-        FILE_LOCATION = "~/gameservers/"
+        USER_NAME= os.environ.get('USER')
+        FILE_LOCATION = "/home/"+USER_NAME+"/gameservers/"        
         subprocess.run(["bash",FILE_LOCATION+filename+".sh"])
 
 def check_server_status(server_name):
