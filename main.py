@@ -61,6 +61,10 @@ async def startserver(ctx, server):
             open_file(r"palworld/StartPalworldServer")
             await ctx.send(server + " server started.")
             return
+        if(server.lower() == 'starrupture')
+            open_file(r"starrupter/StartStarRuptureServer")
+            await ctx.send(server + " server started.")
+            return
         else:
             await ctx.send(server + " is not an option on !listservers.")
             return
