@@ -47,7 +47,7 @@ async def startserver(ctx, server):
         return
     else:
         if(server.lower() == 'moria'):
-            open_file(r"moriaserver/startMoriaServer")
+            open_file(r"moria/startMoriaServer")
             await ctx.send(server + " server started.")
             return
         if(server.lower() == 'valheim'):
@@ -55,7 +55,7 @@ async def startserver(ctx, server):
             await ctx.send(server + " server started.")
             return
         if(server.lower() == 'enshrouded'):
-            open_file(r"enshroudedserver/StartEnshroudedServer")
+            open_file(r"enshrouded/StartEnshroudedServer")
             await ctx.send(server + " server started.")
             return
         if(server.lower() == 'palworld'):
@@ -75,7 +75,7 @@ async def startserver(ctx, server):
 async def closeserver(ctx, server):
     if check_server_status(server):
         if(server.lower() == 'enshrouded'):
-            open_file(r"enshroudedserver/CloseEnshroudedServer")
+            open_file(r"enshrouded/CloseEnshroudedServer")
             await ctx.send(server + " server closed.")
             return
         else:
