@@ -62,7 +62,7 @@ async def startserver(ctx, server):
             await ctx.send(server + " server started.")
             return
         if(server.lower() == 'starrupture'):
-            open_file(r"starrupter/StartStarRuptureServer")
+            open_file(r"starrupture/StartStarRuptureServer")
             await ctx.send(server + " server started.")
             return
         else:
