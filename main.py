@@ -18,7 +18,7 @@ def open_file(filename):
     else:
         USER_NAME= os.environ.get('USER')
         FILE_LOCATION = "/home/"+USER_NAME+"/gameservers/"        
-        subprocess.run(["bash",FILE_LOCATION+filename+".sh"])
+        subprocess.Popen(["bash",FILE_LOCATION+filename+".sh"])
 
 def check_server_status(server_name):
     for process in psutil.process_iter(attrs=['pid','name']):
