@@ -37,7 +37,7 @@ async def on_ready():
 
 @client.command()
 async def listservers(ctx):
-     await ctx.send("The currently available servers are: Moria, Enshrouded, Valheim and Palworld")
+     await ctx.send("The currently available servers are: StarRupture, Moria, Enshrouded, Valheim and Palworld")
 
 @client.command()
 @commands.has_role(1319646693838557264)
